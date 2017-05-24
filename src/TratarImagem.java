@@ -53,6 +53,7 @@ public class TratarImagem {
 		try {
 			ImageIO.write(outImg, "PNG", new File(fileName));
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return JAI.create("fileload", fileName);
