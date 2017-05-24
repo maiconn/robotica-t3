@@ -13,7 +13,7 @@ import com.sun.media.jai.widget.DisplayJAI;
  * DisplayJAI. The scrolling bars of both images are synchronized so scrolling
  * one image will automatically scroll the other.
  */
-public class DisplayTwoSynchronizedImages extends JPanel implements AdjustmentListener {
+public class DisplaySynchronizedImages extends JPanel implements AdjustmentListener {
     /**
          * 
          */
@@ -22,10 +22,14 @@ public class DisplayTwoSynchronizedImages extends JPanel implements AdjustmentLi
     protected DisplayJAI dj1;
     /** The DisplayJAI for the second image. */
     protected DisplayJAI dj2;
+    /** The DisplayJAI for the second image. */
+    protected DisplayJAI dj3;
     /** The JScrollPane which will contain the first of the images */
     protected JScrollPane jsp1;
     /** The JScrollPane which will contain the second of the images */
     protected JScrollPane jsp2;
+    /** The JScrollPane which will contain the second of the images */
+    protected JScrollPane jsp3;
     /**
      * Creates an instance of this class, setting the components' layout,
      * creating two instances of DisplayJAI for the two images and
@@ -36,15 +40,18 @@ public class DisplayTwoSynchronizedImages extends JPanel implements AdjustmentLi
      * @param im2
      *            the second image (right side)
      */
-    public DisplayTwoSynchronizedImages(RenderedImage im1, RenderedImage im2) {
+    public DisplaySynchronizedImages(RenderedImage im1, RenderedImage im2, RenderedImage im3) {
         super();
-        setLayout(new GridLayout(1, 2));
+        setLayout(new GridLayout(1, 3));
         dj1 = new DisplayJAI(im1); // Instances of DisplayJAI for the
         dj2 = new DisplayJAI(im2); // two images
+        dj3 = new DisplayJAI(im3); // two images
         jsp1 = new JScrollPane(dj1); // JScrollPanes for the both
         jsp2 = new JScrollPane(dj2); // instances of DisplayJAI
+        jsp3 = new JScrollPane(dj3); // instances of DisplayJAI
         add(jsp1);
         add(jsp2);
+        add(jsp3);
         // Retrieve the scroll bars of the images and registers adjustment
         // listeners to them.
         // Horizontal scroll bar of the first image.
@@ -55,10 +62,14 @@ public class DisplayTwoSynchronizedImages extends JPanel implements AdjustmentLi
         jsp2.getHorizontalScrollBar().addAdjustmentListener(this);
         // Vertical scroll bar of the second image.
         jsp2.getVerticalScrollBar().addAdjustmentListener(this);
+        // Horizontal scroll bar of the second image.
+        jsp3.getHorizontalScrollBar().addAdjustmentListener(this);
+        // Vertical scroll bar of the second image.
+        jsp3.getVerticalScrollBar().addAdjustmentListener(this);
     }
-    public DisplayTwoSynchronizedImages(List<RenderedImage> images) {
+    public DisplaySynchronizedImages(List<RenderedImage> images) {
         super();
-        setLayout(new GridLayout(images.size()/2, 2));
+        setLayout(new GridLayout(images.size()/3, 3));
         for (RenderedImage image : images) {
             DisplayJAI dj = new DisplayJAI(image); // Instances of DisplayJAI
                                                    // for the
