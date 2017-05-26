@@ -117,13 +117,13 @@ public class TratarImagem {
 		return JAI.create("fileload", fileName);
 	}
 
-	public static Celula[][] processar(PlanarImage imagem) {
+	public static int[][] processar(PlanarImage imagem) {
 		Raster raster = imagem.getAsBufferedImage().getRaster();
 		// Cria arrays com a quantidade de bytes por pixel
 		int[] pixel = new int[raster.getNumBands()];
 
 		int valores[][] = new int[7][7];
-		Celula[][] celulas = new Celula[7][7];
+		int[][] celulas = new int[7][7];
 
 		int xx = 0;
 		int yy = 0;
@@ -146,11 +146,9 @@ public class TratarImagem {
 				}
 
 				if (qtdPretos >= 100) {
-					valores[xx][yy] = 1;
-					celulas[xx][yy] = new Celula(-1);
+					celulas[xx][yy] = -1;
 				} else {
-					valores[xx][yy] = 0;
-					celulas[xx][yy] = new Celula(0);
+					celulas[xx][yy] = 0;
 				}
 
 				valores[xx][yy] = qtdPretos;
@@ -160,18 +158,18 @@ public class TratarImagem {
 			yy++;
 		}
 
-		for (int row = 0; row < valores.length; row++) {
-	        for (int col = 0; col < valores[row].length; col++) {
-	            System.out.printf("%4d |", valores[row][col]);
+		for (int row = 0; row < celulas.length; row++) {
+	        for (int col = 0; col < celulas[row].length; col++) {
+	            System.out.printf("%4d |", celulas[row][col]);
 	        }
 	        System.out.println();
 	    }
 		
 		System.out.println();
 		
-		for (int row = 0; row < celulas.length; row++) {
-	        for (int col = 0; col < celulas[row].length; col++) {
-	            System.out.printf("%4d |", celulas[row][col].getValor());
+		for (int row = 0; row < valores.length; row++) {
+	        for (int col = 0; col < valores[row].length; col++) {
+	            System.out.printf("%4d |", valores[row][col]);
 	        }
 	        System.out.println();
 	    }
@@ -196,7 +194,9 @@ public class TratarImagem {
 		PlanarImage dilatada = dilatar(binariazada);
 		PlanarImage erodida = erosar(dilatada);
 		
-		Celula[][] celulas = processar(erodida);
+		int[][] valores = processar(erodida);
+		
+		new MyWaveFront(valores, 3, 5, 0, 0).WaveFront();
 		
 		JFrame frame = new JFrame("Imagem Fornecida | Imagem Tratada | Imagem em Quadrantes");
 		frame.add(new DisplaySynchronizedImages(image, erodida, getImagemProcessada(erodida)));
