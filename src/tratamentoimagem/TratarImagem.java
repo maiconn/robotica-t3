@@ -12,10 +12,6 @@ import javax.imageio.ImageIO;
 import javax.media.jai.JAI;
 import javax.media.jai.KernelJAI;
 import javax.media.jai.PlanarImage;
-import javax.media.jai.iterator.RandomIter;
-import javax.media.jai.iterator.RandomIterFactory;
-
-import com.sun.media.jai.iterator.RandomIterCSMInt;
 
 import wavefront.Orientacao;
 import wavefront.Ponto;
@@ -42,17 +38,43 @@ public class TratarImagem {
 		return processar(imagemFinal);
 	}
 
+	/*int branco = 255;
+	public boolean ehRobo(Raster imagem, int x, int y) {
+		for (int i = 0; i < imagem.getWidth(); i++) {
+			for (int j = 0; j < imagem.getHeight(); j++) {
+				int pixel[] = new int[3];
+				pixel = imagem.getPixel(x, y, pixel);
+				if (pixel[0] >= branco) {
+					try {
+						
+						for (int xx = x - 5; xx < x + 5; xx++) {
+							for (int yy = y - 3; yy < y + 3; yy++) {
+								pixel = imagem.getPixel(x, y, pixel);
+								if (pixel[0] >= branco) {
+									
+								}
+							}
+						}
+						return true;
+					} catch (Exception ex) {
+						return false;
+					}
+				}
+			}
+		}
+	}*/
+
 	public Ponto acharRobo() {
 		// Abre imagem e cria raster
 		BufferedImage input = JAI.create("fileload", caminho).getAsBufferedImage();
 		Raster raster = input.getRaster();
-		
+
 		// Cria arrays com a quantidade de bytes por pixel
 		int[] pixel = new int[raster.getNumBands()];
 
 		int xx = 0;
 		int yy = 0;
-		
+
 		Ponto ponto = null;
 		int valores[][] = new int[7][7];
 		// Loopa os pixels de entrada
@@ -73,7 +95,7 @@ public class TratarImagem {
 
 				if (qtdBrancos >= 98) {
 					ponto = new Ponto(xx, yy);
-				} 
+				}
 
 				valores[xx][yy] = qtdBrancos;
 				xx++;
@@ -83,7 +105,7 @@ public class TratarImagem {
 		}
 
 		raster.getPixel(286, 184, pixel);
-		
+
 		System.out.println(pixel[0]);
 		System.out.println("QTD BRANCOS:");
 		for (int row = 0; row < valores.length; row++) {
