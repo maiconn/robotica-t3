@@ -38,31 +38,27 @@ public class TratarImagem {
 		return processar(imagemFinal);
 	}
 
-	/*int branco = 255;
+	int branco = 251;
 	public boolean ehRobo(Raster imagem, int x, int y) {
-		for (int i = 0; i < imagem.getWidth(); i++) {
-			for (int j = 0; j < imagem.getHeight(); j++) {
-				int pixel[] = new int[3];
-				pixel = imagem.getPixel(x, y, pixel);
-				if (pixel[0] >= branco) {
-					try {
-						
-						for (int xx = x - 5; xx < x + 5; xx++) {
-							for (int yy = y - 3; yy < y + 3; yy++) {
-								pixel = imagem.getPixel(x, y, pixel);
-								if (pixel[0] >= branco) {
-									
-								}
-							}
+		int pixel[] = new int[3];
+		pixel = imagem.getPixel(x, y, pixel);
+		if (pixel[0] >= branco) {
+			try {
+				for (int xx = x - 5; xx < x + 5; xx++) {
+					for (int yy = y - 3; yy < y + 3; yy++) {
+						pixel = imagem.getPixel(xx, yy, pixel);
+						if (pixel[0] < branco) {
+							return false;
 						}
-						return true;
-					} catch (Exception ex) {
-						return false;
 					}
 				}
+				return true;
+			} catch (Exception ex) {
+				return false;
 			}
 		}
-	}*/
+		return false;
+	}
 
 	public Ponto acharRobo() {
 		// Abre imagem e cria raster
@@ -90,12 +86,16 @@ public class TratarImagem {
 						if (pixel[0] >= 251) {
 							qtdBrancos++;
 						}
+						
+						if(ehRobo(raster, (x + ix), (y + iy))){
+							ponto = new Ponto(xx, yy);
+						}
 					}
 				}
-
-				if (qtdBrancos >= 98) {
-					ponto = new Ponto(xx, yy);
-				}
+//
+//				if (qtdBrancos >= 98) {
+//					ponto = new Ponto(xx, yy);
+//				}
 
 				valores[xx][yy] = qtdBrancos;
 				xx++;
